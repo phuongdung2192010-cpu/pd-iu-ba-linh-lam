@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our love diary - Phương Dung & Bá Lĩnh</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FDFBF7',
+                        paper: '#F7F4EB',
+                        roseGold: '#D4A373',
+                        softPink: '#FFE5EC',
+                        deepRose: '#9E2A2B',
+                        bookCover: '#582C1E'
+                    },
+                    fontFamily: {
+                        tnr: ['"Times New Roman"', 'Times', 'serif'],
+                        cursive: ['"Dancing Script"', 'cursive'],
+                        serifHeader: ['"Playfair Display"', 'serif'],
+                        sans: ['Quicksand', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: radial-gradient(circle at center, #FFF5F5 0%, #FED7E2 50%, #FBBF24 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* Paper Texture Effect */
+        .paper-texture {
+            background-color: #FAF6EE;
+            background-image: radial-gradient(#E5DFD3 0.75px, transparent 0.75px), radial-gradient(#E5DFD3 0.75px, #FAF6EE 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+        }
+
+        /* 3D Book Shadow & Spine */
+        .book-container {
+            box-shadow: 0 25px 50px -12px rgba(88, 44, 30, 0.35), 
+                        0 10px 20px -5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .book-spine {
+            background: linear-gradient(to right, 
+                rgba(0,0,0,0.15) 0%, 
+                rgba(0,0,0,0.4) 30%, 
+                rgba(0,0,0,0.6) 50%, 
+                rgba(0,0,0,0.3) 70%, 
+                rgba(0,0,0,0.05) 100%);
+        }
+
+        /* Page Shadow on Left & Right */
+        .left-page-shadow {
+            background: linear-gradient(to right, rgba(0,0,0,0) 90%, rgba(0,0,0,0.08) 100%);
+        }
+
+        .right-page-shadow {
+            background: linear-gradient(to left, rgba(0,0,0,0) 90%, rgba(0,0,0,0.08) 100%);
+        }
+
+        /* Custom Scrollbar for left page */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(212, 163, 115, 0.1);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(158, 42, 43, 0.3);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(158, 42, 43, 0.6);
+        }
+
+        /* Heart Floating Animation */
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 50;
+            animation: floatUp 4s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) scale(0.5) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Photo Frame Tape Effect */
+        .tape {
+            position: absolute;
+            width: 70px;
+            height: 22px;
+            background-color: rgba(255, 255, 255, 0.65);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            backdrop-filter: blur(2px);
+            z-index: 10;
+        }
+        .tape-top-left {
+            top: -10px;
+            left: -15px;
+            transform: rotate(-25deg);
+        }
+        .tape-top-right {
+            top: -10px;
+            right: -15px;
+            transform: rotate(20deg);
+        }
+
+        /* Poloroid Frame */
+        .polaroid {
+            background: white;
+            padding: 10px 10px 18px 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            transition: all 0.3s ease;
+        }
+        .polaroid:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 flex flex-col items-center justify-between min-h-screen p-3 md:p-6 select-none">
+
+    <div id="heart-container" class="fixed inset-0 pointer-events-none z-0"></div>
+
+    <header class="w-full max-w-5xl text-center mb-4 z-10 flex flex-col items-center">
+        <!-- Main Title -->
+        <h1 class="font-serifHeader text-3xl sm:text-5xl md:text-6xl font-bold text-deepRose tracking-wide drop-shadow-sm flex items-center justify-center gap-3">
+            <i class="fa-solid font-normal text-rose-500 fa-heart animate-pulse text-2xl sm:text-4xl"></i>
+            Our love diary
+            <i class="fa-solid font-normal text-rose-500 fa-heart animate-pulse text-2xl sm:text-4xl"></i>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="font-cursive text-xl sm:text-2xl md:text-3xl text-amber-900 mt-1 font-Times New Roman">
+            Phương Dung and Bá Lĩnh phiêu lưu ký
+        </p>
+
+        
+
+    <main class="w-full max-w-6xl my-auto z-10 flex justify-center">
+        <!-- Book Wrapper -->
+        <div class="book-container w-full bg-bookCover p-2 sm:p-4 md:p-6 rounded-2xl md:rounded-3xl border-4 border-amber-950/40">
+            
+            <!-- Book Pages Grid (Left & Right) -->
+            <div class="relative w-full grid grid-cols-1 md:grid-cols-2 bg-paper rounded-xl overflow-hidden min-h-[620px] md:min-h-[720px]">
+                
+                <!-- Center Spine Divider for Desktop -->
+                <div class="hidden md:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-8 book-spine z-30 pointer-events-none"></div>
+
+                <div class="left-page-shadow paper-texture p-6 sm:p-8 md:p-10 flex flex-col justify-between border-b-2 md:border-b-0 md:border-r border-amber-200/60 relative">
+                    
+                    <!-- Decorative Corner Bookmark/Tag -->
+                    <div class="absolute top-0 left-6 bg-deepRose text-white text-xs px-3 py-1.5 rounded-b-lg shadow-md font-sans tracking-wider uppercase font-semibold flex items-center gap-1.5">
+                        <i class="fa-solid fa-bookmark text-amber-300"></i> Trang 01
+                    </div>
+
+                    <div class="mt-6">
+                        <!-- Diary Header Title (Required: Bold, Times New Roman, 15pt / 20px) -->
+                        <div class="font-tnr text-[20px] font-bold text-black border-b border-rose-200/80 pb-2 mb-4 tracking-tight">
+                            Phúc Thọ, ngày 13 tháng 09 năm 2026
+                        </div>
+
+                        <!-- Diary Content Body (Required: Normal weight, Times New Roman, 12pt / 16px) -->
+                        <div class="font-tnr text-[16px] text-gray-900 leading-relaxed space-y-3 custom-scrollbar max-h-[460px] md:max-h-[540px] overflow-y-auto pr-2 text-justify select-text">
+                            <p>Xin chao xin chao, hello anh iu của emm</p>
+                            <p>Dạo này ảnh ngập ngụa công việc quá nên g tui phải tiếp sức chô chồng iu iu đây hehe.</p>
+                            <p>Anh biết dì hăm, á há há làm sao mà biết đượt, tui đã nói đâu hehe. Thì chuyện là hôm qua là ngày kỷ niệm 1 năm làm diệc cùng chồng iu deeeee. Biết tại sao em lại nhớ hăm, đơn giản vì fb gợi ý kỷ niệm xưa và trong lúc tui đang stalk chồng iu. Nhanh qá qá hehehe, mới sinh nhật năm ngoái còn là đồng nghiệp mà sinh nhật năm nay của pd, bá lĩnh đã là của em rui. BÁ LĨNH IS MINE AHAHAHAAHA.</p>
+                            <p>E hèm, chả thích tẹo nào, chả yêu anh tẹo nào đâu ble blo. Anh biết hăm, trước đây em siêu ghét sinh nhật của em, rất rất là ghét lun, đại khái là vào những ngày sắp đến sinh nhật thì tất cả những thứ xui xẻo nhất trên quả đất sẽ ập đến; như kiểu cả thế giới đang bully mini pd huhuhuhuhuh. Đại khái là thế đó còn mún cụ thể hơn thì pd sẽ kể cho anh nghe vào mụt buổi deeptalk gần nhất hehe.</p>
+                            <p>Nhưng mà sau này càng lớn thì em đã dần dần chấp nhận được việc đó và nghĩ tích cực là vũ trụ đang xả hết năng lượng tiêu cực ở tuổi cũ để chuẩn bị cho pd mụt món quà sinh nhật siu to siu khủng long bự chảng. Tui nghĩ vẫn thui chứ vẫn ấm ức và tủi thân vlo uhuhu ghec. Nhưng mà sau khi iu lĩnh, em lại càng ngày càng háo hức mong chờ đến sinh nhật, có thể thấy là năm nay pd đã chuẩn bị rất nhìu thứ cho ngày sinh nhật. Tất nhiên là có ai hỏi tại sao thì em sẽ nói là nhân dịp đủ tuổi đi tù thui á há há.</p>
+                            <p>Em nghĩ một phần là vì pd đã lớn hơn, đã thấy iu bản thân hơn, đã thôi chỉ trích bản thân khi những điều xui xẻo ập tới. NHƯNG PHẦN LỚN HƠNN, chắc là do cổ đón nhận được tình iu to to từ trái tim nhỏ nhỏ và chái chim to to của lĩnh. Ảnh làm cổ háo hức để được ăn sinh nhật với người cổ yêu, thực sự cho đến bây giờ em vẫn thấy tình yêu của chúng mình thật kỳ diệu. Tự nhiên đùng cái lĩnh bay từ trên trời xuống trước mặt pd: "chào em, mình hôn em nhé"=)))) Ỏ, cute vãi m điên à.</p>
+                            <p>Tiếp tiếpppp, nhom nhom nhom, dạo này chồng iu siu siu bận, tối mặt tối mũi luôn á huhu. Pd hăm làm diệc chung với anh nên hăm biết công việc của anh phức tạp như thế nào. Nhưng tui sẽ hong cản anh âu lêu lêu, vì cả hai đứa mình đều trong giai đoạn phát triển, có thể nói là tập bay để chuẩn bị lao vào thị trường lao động, thế nên là vắt chân lên cổ cũng đúng hoi hẹ hẹ (vắt chân lên cổ theo cả 2 nghĩa). Dù là thế, em mong chồng sẽ cân đối được việc học hành, làm việc với sức khỏe ạaaaa, không khỏe sao đi chơi với tui tr ơi tr. Và bất cứ khư nào stress hay burn out, hãy cứ hét tên em thật to vào nhé, em sẽ bay qua ôm anh ngay:&gt; (i hope so).</p>
+                            <p>Thư hum nay tới đây thui lêu lêu, thực ra em viết thư điện tử để viết được nhiều thư hơn cho chồng iu thay vì 1 hoặc 2 lá thư tay mỗi tuần hè hè. À chắc anh sẽ thắc mắc cái web khỉ gió này đâu ra, thì chắc anh vẫn nhớ ông anh rể mới làm vợ dính bầu lần 3 của em đúng hăm, ổng làm IT và em học lỏm đc mấy cái code vớ vẩn của ổng hehe.</p>
+                            <p>Anh nhớ ăn đủ bữa (thực ra t có thể grab để control vấn đề ăn uống của chồng á há há), ngủ đủ giấc, giữ gìn sức khỏe giúp em ạ (ĐÂY KHÔNG PHẢI LÀ REMINDER, ĐÂY LÀ ORDER).</p>
+                            <p class="pt-2 font-Times New Roman text-rose-950">Iu thương anh thật nhiều nhiều,</p>
+                            <p class="italic text-right font-Times New Roman text-xl text-deepRose pt-1">Vợ iu dấu đã ký và hun chụt chụt chụt</p>
+                        </div>
+                    </div>
+
+                    <!-- Page Footnote -->
+                    <div class="mt-4 pt-3 border-t border-amber-200/50 flex justify-between items-center text-xs text-amber-800/70">
+                        <span><i class="fa-solid fa-pen-nib mr-1"></i> Gửi Bá Lĩnh</span>
+                        <span class="font-mono">pd ♥ ba linh</span>
+                    </div>
+                </div>
+
+                <div class="right-page-shadow paper-texture p-6 sm:p-8 md:p-10 flex flex-col justify-between relative">
+                    
+                    <!-- Top Bookmark Tag -->
+                    <div class="absolute top-0 right-6 bg-amber-800 text-white text-xs px-3 py-1.5 rounded-b-lg shadow-md font-sans tracking-wider uppercase font-semibold flex items-center gap-1.5">
+                        Trang 02 <i class="fa-solid fa-camera text-rose-300"></i>
+                    </div>
+
+                    <div class="mt-4 flex flex-col h-full justify-between gap-4">
+                        <div class="text-center mb-1">
+                            <h2 class="font-serifHeader text-lg font-Times new roman text-amber-950">Fav pictures today</h2>
+                            <p class="text-xs text-amber-700 Times new roman">Xem ảnh tui cho bớt nhớ tui lêu lêu</p>
+                        </div>
+
+                        <!-- 1 Large Image Slot at Top -->
+                        <div class="relative group">
+                            <div class="tape tape-top-left"></div>
+                            <div class="tape tape-top-right"></div>
+                            <div class="polaroid cursor-pointer rounded-sm" onclick="triggerFileInput('photo1')">
+                                <div class="relative aspect-[16/9] w-full bg-amber-100/60 border-2 border-dashed border-rose-300 rounded overflow-hidden flex flex-col items-center justify-center group-hover:border-rose-500 transition-colors">
+                                    <img id="img-photo1" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80" alt="Kỷ niệm lớn" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white p-2 text-center">
+                                        <i class="fa-solid fa-cloud-arrow-up text-3xl mb-1"></i>
+                                        <span class="text-xs font-semibold">Thay đổi ảnh kỷ niệm (Lớn)</span>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-2 font-cursive text-lg text-amber-900 font-Times new roman truncate">
+                                    "sến v ble"
+                                </div>
+                            </div>
+                            <input type="file" id="photo1" accept="image/*" class="hidden" onchange="previewImage(this, 'img-photo1')">
+                        </div>
+
+                        <!-- 2 Small Image Slots Side-by-Side at Bottom -->
+                        <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                            <!-- Small Photo 1 -->
+                            <div class="relative group">
+                                <div class="tape tape-top-left" style="width: 45px; height: 16px; top:-8px; left:-8px;"></div>
+                                <div class="polaroid cursor-pointer rounded-sm" onclick="triggerFileInput('photo2')">
+                                    <div class="relative aspect-square w-full bg-amber-100/60 border-2 border-dashed border-rose-300 rounded overflow-hidden flex flex-col items-center justify-center group-hover:border-rose-500 transition-colors">
+                                        <img id="img-photo2" src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=500&q=80" alt="Kỷ niệm nhỏ 1" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white p-1 text-center">
+                                            <i class="fa-solid fa-camera text-xl mb-1"></i>
+                                            <span class="text-[10px] font-semibold">Đổi ảnh 2</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-1.5 font-times new roman text-sm text-amber-900 truncate">
+                                        chụt chụt 
+                                    </div>
+                                </div>
+                                <input type="file" id="photo2" accept="image/*" class="hidden" onchange="previewImage(this, 'img-photo2')">
+                            </div>
+
+                            <!-- Small Photo 2 -->
+                            <div class="relative group">
+                                <div class="tape tape-top-right" style="width: 45px; height: 16px; top:-8px; right:-8px;"></div>
+                                <div class="polaroid cursor-pointer rounded-sm" onclick="triggerFileInput('photo3')">
+                                    <div class="relative aspect-square w-full bg-amber-100/60 border-2 border-dashed border-rose-300 rounded overflow-hidden flex flex-col items-center justify-center group-hover:border-rose-500 transition-colors">
+                                        <img id="img-photo3" src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=500&q=80" alt="Kỷ niệm nhỏ 2" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white p-1 text-center">
+                                            <i class="fa-solid fa-camera text-xl mb-1"></i>
+                                            <span class="text-[10px] font-semibold">Đổi ảnh 3</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-1.5 font-times new roman text-sm text-amber-900 truncate">
+                                        moa moa
+                                    </div>
+                                </div>
+                                <input type="file" id="photo3" accept="image/*" class="hidden" onchange="previewImage(this, 'img-photo3')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Page Footnote -->
+                    <div class="mt-4 pt-3 border-t border-amber-200/50 flex justify-between items-center text-xs text-amber-800/70">
+                        <span><i class="fa-solid fa-heart text-rose-500"></i> iu anh nhắm</span>
+                        <span>13.09.2026</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full max-w-xl my-4 z-10 flex flex-wrap items-center justify-center gap-3">
+        
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 bg-gray-900/90 text-white px-5 py-2.5 rounded-full shadow-2xl text-sm z-50 transition-opacity duration-300 opacity-0 pointer-events-none flex items-center gap-2">
+        <i class="fa-solid fa-check-circle text-green-400"></i>
+        <span id="toast-msg">Thông báo</span>
+    </div>
+
+    <script>
+        // Trigger File Upload for specific input
+        function triggerFileInput(inputId) {
+            document.getElementById(inputId).click();
+        }
+
+        // Preview selected image file
+        function previewImage(input, imgId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgElement = document.getElementById(imgId);
+                    imgElement.src = e.target.result;
+                    showToast("Đã cập nhật ảnh kỷ niệm thành công! ❤️");
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Copy custom slug URL
+        function copyCustomLink() {
+            const linkText = "https://ourlovediary.com/pd-iu-ba-linh-lam";
+            const tempInput = document.createElement("input");
+            tempInput.value = linkText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast("Đã chép đường dẫn: pd-iu-ba-linh-lam");
+        }
+
+        // Toast message display helper
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            const toastMsg = document.getElementById("toast-msg");
+            toastMsg.textContent = message;
+            toast.classList.remove("opacity-0", "pointer-events-none");
+            toast.classList.add("opacity-100");
+            setTimeout(() => {
+                toast.classList.remove("opacity-100");
+                toast.classList.add("opacity-0", "pointer-events-none");
+            }, 3000);
+        }
+
+        // Music Toggle Logic
+        let isPlaying = false;
+        function toggleAudio() {
+            const audio = document.getElementById("bg-music");
+            const btnText = document.getElementById("music-text");
+            const icon = document.getElementById("music-icon");
+
+            if (!isPlaying) {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    btnText.textContent = "Tắt Nhạc Nền";
+                    icon.className = "fa-solid fa-volume-high animate-bounce text-rose-500";
+                    showToast("Đang phát nhạc Lofi du dương 🎵");
+                }).catch(err => {
+                    showToast("Không thể tự động phát nhạc. Hãy tương tác với trang!");
+                });
+            } else {
+                audio.pause();
+                isPlaying = false;
+                btnText.textContent = "Bật Nhạc Lofi Nền";
+                icon.className = "fa-solid fa-music";
+                showToast("Đã tắt nhạc nền.");
+            }
+        }
+
+        // Floating Hearts Background Generation
+        function createHeart() {
+            const heartContainer = document.getElementById("heart-container");
+            const heart = document.createElement("div");
+            heart.className = "floating-heart text-rose-400/60";
+            
+            const icons = ["fa-heart", "fa-heart", "fa-sparkles", "fa-hand-holding-heart"];
+            const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+            
+            heart.innerHTML = `<i class="fa-solid ${randomIcon}"></i>`;
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+            heart.style.fontSize = (Math.random() * 16 + 12) + "px";
+            
+            heartContainer.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+
+        // Interval floating hearts
+        setInterval(createHeart, 500);
+
+        // Burst hearts on button click
+        function burstHearts() {
+            for(let i = 0; i < 20; i++) {
+                setTimeout(createHeart, i * 50);
+            }
+            showToast("gửi mụt tỉ nụ hôn cho chồng iu");
+        }
+    </script>
+</body>
+</html>
